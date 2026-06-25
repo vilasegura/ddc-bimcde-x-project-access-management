@@ -1,0 +1,821 @@
+openapi: "3.0.3"
+info:
+  title: x-project-access-management
+  version: 1.0.0
+  description: Experience API for managing access to projects through user and role assignments, enabling orchestration and synchronization between internal BPM processes and external BIM-CDE platforms such as Autodesk Construction Cloud (ACC).
+servers:
+  - url: https://api-des.aena.es/x-project-access-management/v1
+    description: Development Server on Anypoint Platform.
+  - url: https://api-pre.aena.es/x-project-access-management/v1
+    description: Preproduction Server on Anypoint Platform.
+  - url: https://api.aena.es/x-project-access-management/v1
+    description: Production Server on Anypoint Platform.
+tags:
+  - name: Project-Roles-Synchronization
+    description: Operations for synchronizing project roles across systems.
+  - name: Users
+    description: Operations for managing users synchronized from external identity sources.
+  - name: Roles
+    description: Operations for managing roles synchronized from external identity sources.
+paths:
+  /projects/rolesSynchronizations:
+    post:
+      tags:
+        - Project-Roles-Synchronization
+      summary: Create project role synchronization.
+      description: Create a project role synchronization in ACC.
+      operationId: post-projectsRolesSynchronizations
+      parameters:
+        - $ref: "#/components/parameters/client-id"
+        - $ref: "#/components/parameters/client-name"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SyncProjectRolesRequestDTO"
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncProjectRolesResponseDTO"
+        '204':
+          description: No Content.
+          content: {}
+        '207':
+          description: Multi-Status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error207"
+        '400':  
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error404" 
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /projects/roleSynchronizationBatches:
+    post:
+      tags:
+        - Project-Roles-Synchronization
+      summary: Create project role synchronization batch.
+      description: Create a batch of project role synchronizations in ACC.
+      parameters:
+        - $ref: "#/components/parameters/client-id"
+        - $ref: "#/components/parameters/client-name"
+      operationId: post-projectsRolesSynchronizationBatches
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SyncProjectRolesBulkRequestDTO"
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncProjectRolesResponseDTO"
+        '204':
+          description: No Content.
+          content: {}
+        '207':
+          description: Multi-Status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error207"
+        '400':  
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error404" 
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get users.
+      description: Get users in a structured response containing grouped data instead of a simple list.
+      operationId: get-users
+      parameters:
+        - $ref: "#/components/parameters/client-id"
+        - $ref: "#/components/parameters/client-name"
+        - $ref: "#/components/parameters/startDate"
+        - $ref: "#/components/parameters/endDate"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/userType"
+      responses:
+        "200":
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersDtoResponse"
+        '204':
+          description: No Content.
+          content: {}
+        '207':
+          description: Multi-Status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error207"
+        '400':  
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error404" 
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /roles:
+    get:
+      tags:
+        - Roles
+      summary: Get roles.
+      description: Get role data structured in one or more grouped collections, not as a direct list of roles.
+      operationId: get-roles
+      parameters:
+        - $ref: "#/components/parameters/client-id"
+        - $ref: "#/components/parameters/client-name"
+        - $ref: "#/components/parameters/startDate"
+        - $ref: "#/components/parameters/endDate"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RolesDtoResponse"
+        '204':
+          description: No Content.
+          content: {}
+        '207':
+          description: Multi-Status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error207"
+        '400':  
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error404" 
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error500"
+components:
+  parameters:
+    # -- Headers -- 
+    client-id:
+      name: client-id
+      in: header
+      description: Identifier of the client application making the request.
+      required: true
+      schema:
+        type: string
+      example: a3f928c2-4c8d-4b29-bb3e-9e1e5a9c1f3e
+    client-name:
+      name: client-name
+      in: header
+      description: Name of the client application making the request.
+      required: true
+      schema:
+        type: string
+      example: Generic_Client_APP_DEV
+    # -- Query Parameters --
+    startDate:
+      name: startDate
+      in: query
+      description: Date of start for filtering users. 
+      required: false
+      schema:
+        type: string
+        format: date-time
+      example: 2023-01-01T00:00:00Z
+    endDate:
+      name: endDate
+      in: query
+      description: Date of end for filtering users.
+      required: false
+      schema:
+        type: string  
+        format: date-time
+        example: 2023-12-31T23:59:59Z
+    page:
+      name: page
+      in: query
+      description: Page number for pagination.
+      required: false
+      schema: 
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
+    limit:
+      name: limit
+      in: query
+      description: Number of items per page for pagination.
+      required: false
+      schema: 
+        type: integer
+        format: int32
+        default: 200
+        minimum: 1
+        maximum: 200
+    userType:
+      name: userType
+      in: query
+      description: Type of users to filter in the response, either 'all', 'added', or 'removed'.
+      required: false
+      schema:
+        type: string
+        default: all
+        example: all
+  schemas:
+    SyncProjectRolesRequestDTO:
+      type: object
+      description: Object representing the request to synchronize roles within a project, including the list of roles and associated users with their respective actions (add or remove).
+      properties:
+        roles:
+          type: array
+          description: List of roles to synchronize within the project.
+          items:
+            $ref: "#/components/schemas/RoleAssignmentDTO"
+        projectId:
+          type: string
+          description: Project identifier.
+          example: 550e8400-e29b-41d4-a716-446655440000
+    RoleAssignmentDTO:
+      type: object
+      description: Object representing a role to synchronize within the project, including the list of users associated with the role and their respective actions (add or remove), as well as the identifier of the role in ACC.
+      properties:
+        users:
+          type: array
+          description: List of users associated with the role, including their email addresses and the actions to perform (add or remove).
+          items:
+            $ref: "#/components/schemas/UserAssignmentDTO"
+        providerId:
+          type: string
+          description: Identifier of the role in ACC.
+          example: 550e8400-e29b-41d4-a716-446655440000
+    UserAssignmentDTO:
+      type: object
+      description: Object representing a user associated with a role, including their email address and the action to perform (add or remove) during the synchronization process.
+      properties:
+        email:
+          type: string
+          description: User email address.
+          example: john.doe@aena.es
+        actionType:
+          type: string
+          description: Type of action used to perform on the provided list of users across all specified projects.
+          example: add
+          enum:
+          - add
+          - remove
+    SyncProjectRolesBulkRequestDTO:
+      type: object
+      description: Object representing the request to synchronize roles within multiple projects in batch, including the list of project identifiers and for each project, the roles and associated users with their respective actions (add or remove).
+      properties:
+        projectIds:
+          type: array
+          description: List of project identifiers.
+          items:
+            type: string
+            example: "[\"550e8400-e29b-41d4-a716-446655440000\",\"550e8400-e29b-41d4-a716-446655440001\"]"
+        providerId:
+          type: string
+          description: Identifier of the role in ACC.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        users:
+          type: array
+          description: List of user email addresses.
+          items:
+            type: string
+            example: "[\"john.doe@aena.es\",\"jane.doe@aena.es\"]"
+        actionType:
+          type: string
+          description: Type of action used to perform on the provided list of users.
+          example: add
+          enum:
+          - add
+          - remove
+    SyncProjectRolesResponseDTO:
+      type: object
+      description: Object representing the response of the project role synchronization operation, indicating whether the synchronization was successful and providing details of any failures that occurred during the process.
+      properties:
+        isSuccess: 
+          type: boolean
+          description: Indicates whether the synchronization operation was completely successful.
+          example: true
+        failures:
+          type: array
+          description: List of assignments that could not be synchronized.
+          items:
+            $ref: "#/components/schemas/FailedAssignmentDTO"
+    FailedAssignmentDTO:
+      type: object
+      description: Object representing a failed assignment during the synchronization process, including the project identifier, user email address, role identifier, and details of the error that occurred.
+      properties:
+        projectId:
+          type: string
+          description: Project identifier.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        email:
+          type: string
+          description: User email address.
+          example: john.doe@aena.es
+        providerId:
+          type: string
+          description: Identifier of the role in ACC.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        errorCode:
+          type: string
+          description: Application error code.
+          example: ROLE_NOT_FOUND
+        errorMessage:
+          type: string
+          description: Detailed error description.
+          example: The specified role could not be found.
+    UsersDtoResponse:
+      type: object
+      description: Object representing the response of the request to get users synchronized from AD and ACC, including the list of users with their respective actions (add or remove), pagination information, and the timestamp of the last synchronization.
+      properties:
+        users: 
+          type: array
+          description: List of synchronized users with their respective actions.
+          items: 
+            $ref: "#/components/schemas/UserDto"
+        hasMorePages: 
+          type: boolean
+          description: Indicates whether there are more pages of data available.
+          example: false
+        lastUpdatedDate: 
+          type: string
+          format: date-time
+          description: Date of the last synchronization.
+          example: "2026-06-16T10:00:00Z"
+    UserDto:
+      type: object
+      description: Object representing a user synchronized from AD or ACC, including their email, name, external identifier, and the action performed during synchronization (add or remove).
+      properties:
+        email:
+          type: string
+          description: User email address.
+          example: john.doe@aena.es
+        name:
+          type: string
+          description: Full name of the user.
+          example: "Doe, John"
+        cases:
+          type: array
+          description: List of cases assigned to the user.
+          items:
+            type: string
+            example: "[\"CASE_001\",\"CASE_002\"]"
+        roles:
+          type: array
+          description: List of roles associated with the user, including their names and synchronization statuses.
+          items:
+            $ref: "#/components/schemas/UserRoleDto"
+        providerId:
+          type: string
+          description: Identifier of the user in ACC.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        officeIATACode:
+          type: string
+          description: Code of the office associated with the user, following the IATA standard.
+          example: MAD
+        isActive:
+          type: boolean
+          description: Indicates whether the user is active or inactive in the system.
+          example: true
+    UserRoleDto:
+      type: object
+      description: Object representing a role associated with a user, including the role name and the current synchronization status of the role (added or removed).
+      properties:
+        roleName:
+          type: string
+          description: Name of the role associated with the user.
+          example: Project Manager
+        status:
+          type: string
+          description: Type of action performed during synchronization for this role.
+          example: added
+          enum:
+          - added
+          - removed
+    RolesDtoResponse:
+      type: object
+      description: Object representing the response of the request to get roles synchronized from AD and ACC, including the list of roles with their respective actions (add or remove), pagination information, and the timestamp of the last synchronization.
+      properties:
+        roles: 
+          type: array
+          description: List of synchronized roles with their respective actions.
+          items: 
+            $ref: "#/components/schemas/RoleDto"
+        hasMorePages: 
+          type: boolean
+          description: Indicates whether there are more pages of data available.
+          example: false
+        lastUpdatedDate: 
+          type: string
+          format: date-time
+          description: Date of the last synchronization.
+          example: "2026-06-16T10:00:00Z"
+    RoleDto:
+      type: object
+      description: Object representing a role synchronized from AD or ACC, including its name, external identifier, and the action performed during synchronization (add or remove).
+      properties:
+        status:
+          type: string
+          description: Type of action performed during synchronization for this role.
+          example: created
+          enum:
+          - created
+          - deleted
+        roleName:
+          type: string
+          description: Name of the role synchronized from AD or ACC.
+          example: Project Manager
+        providerId:
+          type: string
+          description: Identifier of the role in ACC.
+          example: 550e8400-e29b-41d4-a716-446655440000
+    # -- Error Schemas --
+    Error207:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 207
+            error:
+              type: string
+              example: Multi-Status
+            message:
+              type: string
+              example: The request was processed partially.
+            errors:
+              type: array
+              example:
+                - value: Some items were not processed successfully
+                  key: partial_failure
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error400:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 400
+            error:
+              type: string
+              example: Bad Request
+            message:
+              type: string
+              example: Validation failed
+            errors:
+              type: array
+              example:
+                - value: must not be empty
+                  key: name
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error401:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 401
+            error:
+              type: string
+              example: Unauthorized
+            message:
+              type: string
+              example: Authentication credentials were missing or incorrect
+            errors:
+              type: array
+              example:
+                - value: must be provided
+                  key: authorization
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error403:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 403
+            error:
+              type: string
+              example: Forbidden
+            message:
+              type: string
+              example: Access is denied
+            errors:
+              type: array
+              example:
+                - value: You do not have permission to access this resource
+                  key: permission
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error404:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 404
+            error:
+              type: string
+              example: Not Found
+            message:
+              type: string
+              example: The requested resource was not found
+            errors:
+              type: array
+              example:
+                - value: The specified resource does not exist
+                  key: resource
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error405:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 405
+            error:
+              type: string
+              example: Method Not Allowed
+            message:
+              type: string
+              example: The method is not allowed for the requested URL
+            errors:
+              type: array
+              example:
+                - value: The HTTP method used is not supported for this resource
+                  key: method
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    Error500:
+      allOf:
+        - $ref: '#/components/schemas/ErrorBase'
+        - type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+              example: 500
+            error:
+              type: string
+              example: Internal Server Error
+            message:
+              type: string
+              example: An unexpected error occurred on the server
+            errors:
+              type: array
+              example:
+                - value: An unexpected error occurred while processing the request
+                  key: server
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+    ErrorBase:
+      required:
+        - client
+        - code
+        - error
+        - message
+        - path
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+          description: 'Timestamp when the error occurred, in ISO 8601 format.'
+          format: date-time
+          example: '2025-06-26T12:45:30.456+02:00'
+        code:
+          type: integer
+          description: Code of the HTTP error.
+          format: int32
+          example: 400
+        error:
+          type: string
+          description: Short description of the error type.
+          example: Bad Request
+        message:
+          type: string
+          description: Message providing more details about the error.
+          example: Validation failed
+        path:
+          type: string
+          description: Route or endpoint where the error occurred.
+          example: /api/v1/resource
+        client:
+          type: string
+          description: 'Identifier of the client application that made the request, useful for tracking and debugging.'
+          example: Generic_Client_APP
+        errors:
+          type: array
+          description: List of specific validation errors related to the request.
+          example:
+            - key: name
+              value: must not be empty
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+      description: Data Transfer Object for Errors.
+    ErrorDetail:
+      required:
+        - key
+        - value
+      type: object
+      properties:
+        key:
+          type: string
+          description: Key that identifies the error in the request.
+          example: name
+        value:
+          type: string
+          description: Description of the error related to the key.
+          example: must not be empty
+      description: List of specific validation errors related to the request.
+      example:
+        - key: name
+          value: must not be empty

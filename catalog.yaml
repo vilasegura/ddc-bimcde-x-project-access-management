@@ -1,0 +1,7 @@
+#%Catalog Descriptor 1.0
+projects:
+  - main: x-project-access-management.yaml
+    assetId: x-project-access-management
+    version: 1.0.0
+    apiVersion: v1
+    versionStrategy: fixed
